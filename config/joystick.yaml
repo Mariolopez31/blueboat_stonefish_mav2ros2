@@ -1,0 +1,18 @@
+teleop_twist_joy_node:
+  ros__parameters:
+    # --- Mapeo de Ejes (Para mandos tipo Xbox/Logitech) ---
+    # Eje 1: Stick Izquierdo Vertical (Adelante/Atrás)
+    # Eje 3: Stick Derecho Horizontal (Giro)
+    axis_linear: {x: 1}
+    axis_angular: {yaw: 3} 
+
+    # --- Velocidades Máximas ---
+    scale_linear: {x: 2.0}   # 2 m/s máx
+    scale_angular: {yaw: 1.5} # 1.5 rad/s máx
+
+    # --- Botón de Seguridad ("Deadman Switch") ---
+    # ¡OJO! Tienes que mantener pulsado este botón para que el barco se mueva.
+    # Botón 5 suele ser "RB" (Right Bumper) o "R1".
+    # Si no pulsas nada, el barco se para por seguridad.
+    enable_button: 5
+    require_enable_button: true

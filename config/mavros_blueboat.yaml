@@ -1,0 +1,32 @@
+mavros:
+  ros__parameters:
+
+    target_system_id: 1
+    target_component_id: 1
+
+    timesync_rate: 10.0
+    
+    # --- SISTEMAS DE COORDENADAS ---
+    # Convertir de NED (ArduPilot) a ENU (ROS) automáticamente
+    # map_frame: "map"
+    # base_link_frame: "base_link"
+    # odom_frame: "odom"
+
+    # --- PLUGINS ---
+    plugin_allowlist:
+      - sys_status      # Batería y estado armado/desarmado
+      - imu             # Orientación
+      - local_position  # Odometría y Pose
+      - global_position # GPS
+      - setpoint_velocity # Para moverlo con cmd_vel
+      - rc_io           # Para leer/escribir canales RC crudos
+      - command         # Para armar/desarmar y cambiar modos
+
+    plugin_denylist:
+      - safety_area
+      - image_pub
+      - vibration
+
+    # --- CONFIGURACIÓN ESPECÍFICA DE ROVER ---
+    setpoint_velocity:
+      mav_frame: BODY_NED  # Moverse respecto al frente del barco
