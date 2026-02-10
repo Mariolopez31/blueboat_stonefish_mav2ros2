@@ -21,10 +21,9 @@ def generate_launch_description():
 
     # --- DEFINICIÓN DE NODOS ---
 
-    # A) TU PUENTE (El script de Python que me has pasado arriba)
     sim_bridge_node = Node(
         package='blueboat_stonefish_mav2ros2',
-        executable='stonefish_bridge', # Busca la entrada en setup.py
+        executable='stonefish_bridge', 
         name='stonefish_bridge',
         output='screen',
         parameters=[
@@ -33,22 +32,18 @@ def generate_launch_description():
         ]
     )
 
-    # B) MAVROS (El estándar de ROS)
     mavros_node = Node(
             package='mavros',
             executable='mavros_node',
             output='screen',
-            # Quitamos namespace='mavros' para que coincida con tu YAML
             parameters=[
                 mavros_config, 
-                # Forzamos la URL limpia sin puerto de salida fijo (@) para evitar el "Busy"
                 {'fcu_url': 'udp://@127.0.0.1:14560'},
                 {'target_system_id': 1},
                 {'target_component_id': 1}
             ]
         )
 
-    # C) JOYSTICK DRIVER (Lee el USB del mando)
     joy_node = Node(
         package='joy',
         executable='joy_node',
@@ -56,19 +51,16 @@ def generate_launch_description():
         parameters=[{'deadzone': 0.05}]
     )
 
-    # D) TELEOP (Convierte botones en velocidad cmd_vel)
     teleop_node = Node(
         package='teleop_twist_joy',
         executable='teleop_node',
         name='teleop_twist_joy_node',
-        parameters=[joy_config], # Carga el YAML del joystick
+        parameters=[joy_config],
         remappings=[
-            # REDIRIGIMOS: Lo que sale de teleop va a la entrada de MAVROS
             ('/cmd_vel', '/mavros/setpoint_velocity/cmd_vel_unstamped')
         ]
     )
 
-    # 3. Retornamos la descripción para que ROS ejecute todo
     return LaunchDescription([
         fcu_url_arg,
         sim_bridge_node,
